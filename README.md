@@ -26,3 +26,5 @@ $ python manage.py runserver 0.0.0.0:8000
 ```
 
 then, you can see OpenAPI (Swagger) in http://localhost:8000/api/docs
+
+![](./docs/img/openapi.png)
