@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "hello-ninja"
+version = "0.1.0"
+description = ""
+authors = ["skokado <terutacchi@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = ">=3.2,<4.0"
+django-ninja = "^0.21.0"
+uvicorn = "^0.20.0"
+pyjwt = "^2.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
