@@ -11,6 +11,8 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, username: Optional[str] = None):
+        if not username:
+            username = email
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         user.save()
@@ -29,6 +31,7 @@ class User(AbstractUser):
     email = models.EmailField("Eメールアドレス", unique=True, db_index=True)
 
     objects = UserManager()
+    REQUIRED_FIELDS = []
     USERNAME_FIELD = "email"
 
     class Meta:

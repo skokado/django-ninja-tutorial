@@ -1,6 +1,3 @@
-from typing import TypeAlias
-
-from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 import jwt

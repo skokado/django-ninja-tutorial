@@ -27,12 +27,6 @@ from blog.router import router as blog_router
 api.add_router("/blogs", blog_router, auth=BearerAuth())
 
 
-@api.get("/secure", auth=BearerAuth())
-async def secure(request):
-    print(request.user)
-    return "ok"
-
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", api.urls),
