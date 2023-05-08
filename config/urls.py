@@ -1,7 +1,8 @@
-"""django_project URL Configuration
+"""
+URL configuration for config project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+    https://docs.djangoproject.com/en/4.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -16,15 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from .security import BearerAuth
 from .ninja import api
 
-from auth.routers import router as auth_router
-api.add_router("/auth", auth_router)
+from account.routers import router as account_router
+api.add_router("/account", account_router)
 
 from blog.router import router as blog_router
-api.add_router("/blogs", blog_router)
+api.add_router("/blogs", blog_router, auth=BearerAuth())
+
+
+@api.get("/secure", auth=BearerAuth())
+async def secure(request):
+    print(request.user)
+    return "ok"
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/", api.urls),
 ]

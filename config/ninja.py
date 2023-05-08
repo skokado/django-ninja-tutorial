@@ -4,7 +4,8 @@ from ninja import NinjaAPI
 
 
 api = NinjaAPI(
-    title="My ninja tutorial", version="1.0-beta",
+    title="My ninja tutorial",
+    version="1.0-beta",
     docs_url=None,
 )
 
