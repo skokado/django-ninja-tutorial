@@ -9,8 +9,8 @@ django-ninja is very cool framework for:
 # Versions
 
 - Python: 3.11.x
-- Django: 3.2.x
-- django-ninja: ^0.21.0
+- Django: 4.2.x
+- django-ninja: 1.0b2
 - PyJWT: ^2.6.0
 
 # Getting started
@@ -22,6 +22,7 @@ $ python3 -m venv venv
 $ source venv/bin/activate
 $ poetry install
 $ python manage.py migrate
+$ python manage.py shell < scripts/seed_data/seed_users.py
 $ python manage.py runserver 0.0.0.0:8000
 ```
 

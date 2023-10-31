@@ -7,8 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = ">=3.2,<4.0"
-django-ninja = "^0.21.0"
+django = ">=4.2,<5.0"
+django-ninja = "=1.0b2"
 uvicorn = "^0.20.0"
 pyjwt = "^2.6.0"
 gunicorn = "^20.1.0"
