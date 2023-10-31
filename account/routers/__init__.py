@@ -1,14 +1,13 @@
 from ninja import Router
 
 from config.security import APiKeyAuth, BearerAuth
+from .auth import router as auth
+from .users import router as users
+from .admin.users import router as admin_users
 
 router = Router()
 
-from .auth import router as auth
-
 router.add_router("", auth, tags=["Auth"])
-
-from .users import router as users
 
 router.add_router(
     "/users",
@@ -16,8 +15,6 @@ router.add_router(
     auth=BearerAuth(),
     tags=["Auth/Users"],
 )
-
-from .admin_users import router as admin_users
 
 router.add_router(
     "/admin/users",
