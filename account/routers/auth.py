@@ -10,7 +10,7 @@ router = Router()
 
 
 @router.post("/login", response=LoginResponse)
-def login(request, data: LoginRequest):
+async def login(request, data: LoginRequest):
     user = authenticate(username=data.username, password=data.password)
     if not user:
         raise HttpError(401, "invalid credentials")
@@ -24,6 +24,6 @@ def login(request, data: LoginRequest):
 
 
 @router.get("/logout", response={204: None})
-def logout(request):
+async def logout(request):
     # TODO
     return 204, None

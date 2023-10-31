@@ -6,5 +6,5 @@ router = Router()
 
 
 @router.get("/me", response=UserResponse)
-def me(request):
+async def me(request):
     return request.user
