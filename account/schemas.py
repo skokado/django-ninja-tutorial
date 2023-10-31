@@ -1,6 +1,5 @@
+from uuid import UUID
 from ninja import ModelSchema, Schema, Field
-
-from .models import User
 
 
 class LoginRequest(Schema):
@@ -13,13 +12,11 @@ class LoginResponse(Schema):
     access_token: str = Field(..., description="eyJxxx.yyy.zzz")
 
 
-class UserRequest(ModelSchema):
-    class Config:
-        model = User
-        model_fields = ["email", "password"]
+class UserRequest(Schema):
+    email: str
+    password: str
 
 
-class UserResponse(ModelSchema):
-    class Config:
-        model = User
-        model_fields = ["id", "email"]
+class UserResponse(Schema):
+    id: UUID
+    email: str

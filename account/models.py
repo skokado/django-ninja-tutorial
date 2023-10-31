@@ -10,19 +10,21 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, username: Optional[str] = None):
+    async def create_user(self, email, password, username: Optional[str] = None):
         if not username:
             username = email
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
-        user.save()
+        await user.asave()
+        user.refresh_from_db()
         return user
 
-    def create_superuser(self, email, password, username: Optional[str] = None):
-        user = self.create_user(email, password, username)
+    async def create_superuser(self, email, password, username: Optional[str] = None):
+        user = await self.create_user(email, password, username)
         user.is_superuser = True
         user.is_staff = True
-        user.save()
+        await user.save()
+        user.refresh_from_db()
         return user
 
 
@@ -30,7 +32,7 @@ class User(AbstractUser):
     id = models.UUIDField("id", primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField("Eメールアドレス", unique=True, db_index=True)
 
-    objects = UserManager()
+    objects: UserManager = UserManager()
     REQUIRED_FIELDS = []
     USERNAME_FIELD = "email"
 
