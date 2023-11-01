@@ -1,3 +1,4 @@
+from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.contrib.auth import authenticate
 import jwt
@@ -11,7 +12,7 @@ router = Router()
 
 @router.post("/login", response=LoginResponse)
 async def login(request, data: LoginRequest):
-    user = authenticate(username=data.username, password=data.password)
+    user = await sync_to_async(authenticate)(username=data.username, password=data.password)
     if not user:
         raise HttpError(401, "invalid credentials")
 

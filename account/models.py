@@ -16,7 +16,6 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         await user.asave()
-        user.refresh_from_db()
         return user
 
     async def create_superuser(self, email, password, username: Optional[str] = None):
@@ -24,7 +23,6 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.is_staff = True
         await user.save()
-        user.refresh_from_db()
         return user
 
 

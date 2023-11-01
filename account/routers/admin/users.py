@@ -11,8 +11,8 @@ router = Router()
 
 
 @router.get("/", response=list[UserResponse])
-async def list_users(request):
-    return await sync_to_async(User.objects.all)()
+def list_users(request):
+    return User.objects.all()
 
 
 @router.post("/", response={201: UserResponse})
@@ -21,10 +21,10 @@ async def create_user(request, data: UserRequest):
     return 201, user
 
 
-@router.get("/{user_id}")
+@router.get("/{user_id}", response=UserResponse)
 async def get_user(request, user_id: UUID):
     try:
-        return await User.objects.aget(user_id=user_id)
+        return await User.objects.aget(pk=user_id)
     except User.DoesNotExist:
         raise HttpError(404, f"user_id={user_id} not found")
 
@@ -32,9 +32,9 @@ async def get_user(request, user_id: UUID):
 @router.delete("/{user_id}", response={204: None})
 async def delete_user(request, user_id: UUID):
     try:
-        user = await User.objects.aget(user_id=user_id)
+        user = await User.objects.aget(pk=user_id)
     except User.DoesNotExist:
         raise HttpError(404, f"user_id={user_id} not found")
 
-    user.delete()
+    await sync_to_async(user.delete)()
     return 204, None
