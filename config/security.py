@@ -18,13 +18,12 @@ class BearerAuth(HttpBearer):
         except DecodeError:
             return None
 
-        email = decoded["sub"]
         try:
-            user = await User.objects.aget(email=email)
+            # user = User.objects.get(email=decoded["sub"])
+            user = await User.objects.aget(email=decoded["sub"])
         except User.DoesNotExist:
             raise Http404()
-        if not user:
-            return None
+
         request.user = user
         return token
 

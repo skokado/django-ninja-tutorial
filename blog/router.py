@@ -1,11 +1,13 @@
 from logging import getLogger
 
 from asgiref.sync import sync_to_async
-from django.http import Http404
 from ninja import Router
+from ninja.errors import HttpError
 
 from account.models import User
 from config.security import BearerAuth
+from config.error_message import Http4xxMessage
+
 from .models import Blog
 from .schemas import BlogRequest, BlogResponse
 
@@ -23,7 +25,7 @@ async def create_blog(request, data: BlogRequest):
     # check author_id
     qs_author = await sync_to_async(User.objects.filter)(pk=data.author_id)
     if not await qs_author.aexists():
-        raise Http404()
+        raise HttpError(404, "Blog author not found")
 
     author = await qs_author.aget()
     logger.info("Create Blog")
@@ -33,20 +35,20 @@ async def create_blog(request, data: BlogRequest):
     return 201, obj
 
 
-@router.get("/{blog_id}", response=BlogResponse)
+@router.get("/{blog_id}", response={200: BlogResponse, 404: Http4xxMessage})
 async def get_blog(request, blog_id: int):
     try:
         blog = await Blog.objects.select_related("author").aget(pk=blog_id)
     except Blog.DoesNotExist:
-        raise Http404()
+        raise HttpError(404, "Blog not found")
     return blog
 
 
-@router.delete("/{blog_id}", response={204: None})
+@router.delete("/{blog_id}", response={204: None, 404: Http4xxMessage})
 async def delete_blog(request, blog_id: int):
     try:
         blog = await Blog.objects.aget(pk=blog_id)
     except Blog.DoesNotExist:
-        raise Http404()
+        raise HttpError(404, "Blog not found")
     await sync_to_async(blog.delete)()
     return 204, None

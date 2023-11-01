@@ -17,13 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from account.routers import router as account_router
+from blog.router import router as blog_router
+
 from .security import BearerAuth
 from .ninja import api
 
-from account.routers import router as account_router
 api.add_router("/account", account_router)
 
-from blog.router import router as blog_router
 api.add_router("/blogs", blog_router, auth=BearerAuth())
 
 
