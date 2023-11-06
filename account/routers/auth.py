@@ -5,12 +5,14 @@ import jwt
 from ninja import Router
 from ninja.errors import HttpError
 
+from config.error_message import Http4xxMessage
+
 from ..schemas import LoginRequest, LoginResponse
 
 router = Router()
 
 
-@router.post("/login", response=LoginResponse)
+@router.post("/login", response={201: LoginResponse, 401: Http4xxMessage})
 async def login(request, data: LoginRequest):
     user = await sync_to_async(authenticate)(username=data.username, password=data.password)
     if not user:
@@ -21,7 +23,7 @@ async def login(request, data: LoginRequest):
         settings.SECRET_KEY,
         algorithm=settings.JWT_SIGNING_ALGORITHM,
     )
-    return LoginResponse(sub="email", access_token=encoded)
+    return 201, LoginResponse(sub="email", access_token=encoded)
 
 
 @router.get("/logout", response={204: None})

@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 from django.conf import settings
-from django.http import HttpResponse
 from ninja.errors import HttpError
 
 from ninja import NinjaAPI
@@ -10,7 +9,7 @@ from .error_message import Http4xxMessage
 
 api = NinjaAPI(
     title="My ninja tutorial",
-    version="1.0-beta",
+    version="ninja-1.0b2",
     docs_url=None,
 )
 

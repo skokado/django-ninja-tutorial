@@ -1,8 +1,9 @@
 from ninja import Router
 
+from config.security import BearerAuth
 from ..schemas import UserResponse
 
-router = Router()
+router = Router(auth=BearerAuth())
 
 
 @router.get("/me", response=UserResponse)
