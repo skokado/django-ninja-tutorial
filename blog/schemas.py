@@ -1,22 +1,17 @@
 from uuid import UUID
-from ninja import ModelSchema
+from ninja import Schema
 
 from account.schemas import UserResponse
 
-from .models import Blog
 
-
-class BlogRequest(ModelSchema):
+class BlogRequest(Schema):
     author_id: UUID
-
-    class Config:
-        model = Blog
-        model_fields = ["title", "body"]
+    title: str
+    body: str
 
 
-class BlogResponse(ModelSchema):
+class BlogResponse(Schema):
+    id: UUID
+    title: str
+    body: str
     author: UserResponse
-
-    class Config:
-        model = Blog
-        model_fields = ["id", "title", "body", "author"]

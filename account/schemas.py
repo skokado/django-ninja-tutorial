@@ -1,5 +1,5 @@
 from uuid import UUID
-from ninja import ModelSchema, Schema, Field
+from ninja import Schema, Field
 
 
 class LoginRequest(Schema):
@@ -8,8 +8,8 @@ class LoginRequest(Schema):
 
 
 class LoginResponse(Schema):
-    sub: str
-    access_token: str = Field(..., description="eyJxxx.yyy.zzz")
+    sub: str = Field(json_schema_extra={"example": "email"})
+    access_token: str = Field(json_schema_extra={"example": "eyJxxx.yyy.zzz"})
 
 
 class UserRequest(Schema):
