@@ -6,7 +6,7 @@ from ninja.errors import HttpError
 
 from account.models import User
 from config.security import BearerAuth
-from config.error_message import Http4xxMessage
+from config.common.schemas.error import Http404Response
 
 from .models import Blog
 from .schemas import BlogRequest, BlogResponse
@@ -35,7 +35,7 @@ async def create_blog(request, data: BlogRequest):
     return 201, obj
 
 
-@router.get("/{blog_id}", response={200: BlogResponse, 404: Http4xxMessage})
+@router.get("/{blog_id}", response={200: BlogResponse, 404: Http404Response})
 async def get_blog(request, blog_id: int):
     try:
         blog = await Blog.objects.select_related("author").aget(pk=blog_id)
@@ -44,7 +44,7 @@ async def get_blog(request, blog_id: int):
     return blog
 
 
-@router.delete("/{blog_id}", response={204: None, 404: Http4xxMessage})
+@router.delete("/{blog_id}", response={204: None, 404: Http404Response})
 async def delete_blog(request, blog_id: int):
     try:
         blog = await Blog.objects.aget(pk=blog_id)

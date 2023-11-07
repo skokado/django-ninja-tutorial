@@ -20,13 +20,10 @@ from django.urls import path
 from account.routers import router as account_router
 from blog.router import router as blog_router
 
-from .security import BearerAuth
 from .ninja import api
 
 api.add_router("/account", account_router)
-
-api.add_router("/blogs", blog_router, auth=BearerAuth())
-
+api.add_router("/blogs", blog_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
