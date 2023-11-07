@@ -1,5 +1,7 @@
 from uuid import UUID
+
 from ninja import Schema, Field
+from pydantic import EmailStr
 
 
 class LoginRequest(Schema):
@@ -13,10 +15,10 @@ class LoginResponse(Schema):
 
 
 class UserRequest(Schema):
-    email: str
+    email: EmailStr
     password: str
 
 
 class UserResponse(Schema):
     id: UUID
-    email: str
+    email: EmailStr

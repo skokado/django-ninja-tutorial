@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
         user = await self.create_user(email, password, username)
         user.is_superuser = True
         user.is_staff = True
-        await user.save()
+        await user.asave()
         return user
 
 
@@ -47,6 +47,7 @@ class ApiKeyManager(models.Manager):
 class ApiKey(models.Model):
     key = models.CharField("key", max_length=64, db_index=True, default=secrets.token_hex)
     memo = models.CharField("メモ", max_length=512)
+    active = models.BooleanField("有効", default=True)
 
     objects = ApiKeyManager()
 

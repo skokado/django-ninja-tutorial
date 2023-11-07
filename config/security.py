@@ -40,7 +40,7 @@ class APiKeyAuth(APIKeyHeader):
         if settings.DEBUG and key == "secret":
             return key
 
-        if ApiKey.objects.filter(key=key).exists():
+        if ApiKey.objects.filter(key=key, active=True).exists():
             return key
 
         return None
