@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.conf import settings
 from ninja.errors import HttpError
 
-from ninja import NinjaAPI, Schema
+from ninja import NinjaAPI
 
 from .common.schemas import error
 
@@ -20,22 +20,15 @@ if settings.DEBUG:
 
 @api.exception_handler(HttpError)
 def handler(request, exc: HttpError):
-    body: Schema
-    if exc.status_code == 400:
-        body = error.Http400Response(detail=exc.args[0])
-    elif exc.status_code == 401:
-        body = error.Http401Response(detail=exc.args[0])
-    elif exc.status_code == 403:
-        body = error.Http403Response(detail=exc.args[0])
-    elif exc.status_code == 404:
-        body = error.Http404Response(detail=exc.args[0])
-    elif exc.status_code == 409:
-        body = error.Http409Response(detail=exc.args[0])
+    if 400 <= exc.status_code < 500:
+        detail=exc.args[1]
     else:
-        body = error.HttpErrorResopnse(
-            code=HTTPStatus(exc.status_code).phrase,
-            message="Internal Server Error",
-        )
+        detail = "Internal Server Error"
+
+    body = error.HttpErrorResopnse(
+        code=HTTPStatus(exc.status_code).phrase,
+        detail=detail,
+    )
     return api.create_response(
         request,
         body.dict(),
