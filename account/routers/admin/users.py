@@ -17,8 +17,9 @@ router = Router(auth=APiKeyAuth())
 
 
 @router.get("/", response=list[UserResponse])
-def list_users(request):
-    return User.objects.all()
+async def list_users(request):
+    # https://stackoverflow.com/questions/62530017/django-3-1-async-views-working-with-querysets
+    return await sync_to_async(list)(User.objects.all())
 
 
 @router.post("/", response={201: UserResponse, 409: Http409Response})
