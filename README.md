@@ -8,9 +8,9 @@ django-ninja is very cool framework for:
 
 # Versions
 
-- Python: 3.11.x
+- Python: 3.12.x
 - Django: 4.2.x
-- django-ninja: 1.0b2
+- django-ninja: 1.0rc0
 - PyJWT: ^2.6.0
 
 # Getting started
